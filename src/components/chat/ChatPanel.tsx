@@ -1,0 +1,32 @@
+import { useState } from "react";
+import type { Message } from "./types";
+import "./chat.css";
+import MessageList from "./MessageList";
+
+export default function ChatPanel() {
+  const [messages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {};
+
+  return (
+    <div className="chat-panel">
+      <div className="chat-header">
+        <h2>Chat</h2>
+      </div>
+      <MessageList messages={messages} />
+      <form className="chat-input-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className="chat-input"
+          placeholder="Describe a diagram..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button type="submit" className="chat-send-btn">
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}
