@@ -1,4 +1,4 @@
-import { Excalidraw } from "@excalidraw/excalidraw/index";
+import { Excalidraw } from "@excalidraw/excalidraw";
 import {
   AppState,
   ExcalidrawImperativeAPI,

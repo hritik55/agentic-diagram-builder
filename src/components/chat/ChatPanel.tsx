@@ -2,12 +2,31 @@ import { useState } from "react";
 import type { Message } from "./types";
 import "./chat.css";
 import MessageList from "./MessageList";
+import { UIMessage } from "ai";
 
-export default function ChatPanel() {
-  const [messages] = useState<Message[]>([]);
+interface ChatPanelProps {
+  messages: UIMessage[];
+  sendMessage: (message: {
+    role: "user";
+    parts: { type: "text"; text: string }[];
+  }) => void;
+  status: string;
+}
+export default function ChatPanel({
+  messages,
+  sendMessage,
+  status,
+}: ChatPanelProps) {
   const [input, setInput] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {};
+  const handleSubmit = (e: React.FormEvent) => {
+    if (!input.trim()) return;
+    // image input - future scope
+    sendMessage({ role: "user", parts: [{ type: "text", text: input }] });
+    setInput("");
+  };
+
+  const isStreaming = status == "submitted" || status === "streaming";
 
   return (
     <div className="chat-panel">
@@ -22,9 +41,10 @@ export default function ChatPanel() {
           placeholder="Describe a diagram..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          disabled={isStreaming}
         />
         <button type="submit" className="chat-send-btn">
-          Send
+          {isStreaming ? "...." : "Send"}
         </button>
       </form>
     </div>

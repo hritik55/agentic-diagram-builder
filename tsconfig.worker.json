@@ -14,5 +14,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "worker-configuration.d.ts"]
+  "include": [
+    "vite.config.ts",
+    "worker-configuration.d.ts",
+    "src/agent.ts",
+    "src/tools.ts",
+    "schema.ts"
+  ]
 }
