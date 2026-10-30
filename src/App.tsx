@@ -1,7 +1,7 @@
 import { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
 import { useAgent } from "agents/react";
 import { useAgentChat } from "@cloudflare/ai-chat/react";
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import Canvas from "./components/Canvas";
 import ChatPanel from "./components/chat/ChatPanel";
 import "./App.css";
@@ -24,7 +24,7 @@ export default function App() {
     setExcalidrawAPI(api);
   }, []);
 
-  const agent = useAgent({ agent: "desgn-agent", name: sessionId });
+  const agent = useAgent({ agent: "design-agent", name: sessionId });
   const { messages, sendMessage, status } = useAgentChat({ agent });
 
   useEffect(() => {
