@@ -40,6 +40,7 @@ export class DesignAgent extends AIChatAgent<Env> {
       tools,
       stopWhen: stepCountIs(5),
     });
+    console.log(result);
     return createUIMessageStreamResponse({
       stream: toUIMessageStream({ stream: result.stream, tools }),
     });

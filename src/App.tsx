@@ -29,13 +29,14 @@ export default function App() {
 
   useEffect(() => {
     if (!excalidrawAPI) return;
-
+    console.log(messages);
     for (const message of messages) {
-      if (message.role === "assistant") continue;
+      if (message.role !== "assistant") continue;
       for (const part of message.parts ?? []) {
+        console.log("part", part);
         if (
           part.type !== "tool-generateDiagram" &&
-          part.type !== "tool-modfyDiagram"
+          part.type !== "tool-modifyDiagram"
         ) {
           continue;
         }
@@ -44,9 +45,9 @@ export default function App() {
         if (appliedToolCalls.current.has(part.id)) continue;
 
         if (part.type === "tool-generateDiagram") {
-          appliedToolCalls.current.add(part.tooCallId);
-          const output = part.output as { elements?: any };
-          const skeletonElements = output.elements;
+          appliedToolCalls.current.add(part.toolCallId);
+          const output = part.output;
+          const skeletonElements = output;
 
           if (Array.isArray(skeletonElements) && skeletonElements.length > 0) {
             const elements = convertToExcalidrawElements(skeletonElements, {
@@ -79,6 +80,7 @@ export default function App() {
       }
     }
   }, [messages, excalidrawAPI]);
+
   return (
     <div className={`app ${theme}`}>
       <div className="canvas-container">

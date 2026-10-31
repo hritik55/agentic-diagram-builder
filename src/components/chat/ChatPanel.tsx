@@ -20,6 +20,7 @@ export default function ChatPanel({
   const [input, setInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!input.trim()) return;
     // image input - future scope
     sendMessage({ role: "user", parts: [{ type: "text", text: input }] });
@@ -43,7 +44,11 @@ export default function ChatPanel({
           onChange={(e) => setInput(e.target.value)}
           disabled={isStreaming}
         />
-        <button type="submit" className="chat-send-btn">
+        <button
+          type="submit"
+          className="chat-send-btn"
+          disabled={isStreaming || !input.trim()}
+        >
           {isStreaming ? "...." : "Send"}
         </button>
       </form>
