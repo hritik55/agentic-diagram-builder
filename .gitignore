@@ -6,6 +6,6 @@ dist
 openspec
 .claude
 notes
-lessons/.vitepress/cache
+.env.local
 
 CLAUDE.md

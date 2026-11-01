@@ -3,6 +3,7 @@ import type { Message } from "./types";
 import "./chat.css";
 import MessageList from "./MessageList";
 import { UIMessage } from "ai";
+import { useAuth } from "../../auth/useAuth";
 
 interface ChatPanelProps {
   messages: UIMessage[];
@@ -18,6 +19,7 @@ export default function ChatPanel({
   status,
 }: ChatPanelProps) {
   const [input, setInput] = useState("");
+  const { signOut } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +35,13 @@ export default function ChatPanel({
     <div className="chat-panel">
       <div className="chat-header">
         <h2>Chat</h2>
+        <button
+          type="button"
+          className="chat-signout-btn"
+          onClick={signOut}
+        >
+          Sign Out
+        </button>
       </div>
       <MessageList messages={messages} />
       <form className="chat-input-form" onSubmit={handleSubmit}>

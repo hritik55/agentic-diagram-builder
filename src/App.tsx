@@ -4,6 +4,8 @@ import { useAgentChat } from "@cloudflare/ai-chat/react";
 import { useCallback, useState, useRef, useEffect } from "react";
 import Canvas from "./components/Canvas";
 import ChatPanel from "./components/chat/ChatPanel";
+import AuthScreen from "./auth/AuthScreen";
+import { useAuth } from "./auth/useAuth";
 import "./App.css";
 import {
   CaptureUpdateAction,
@@ -13,7 +15,7 @@ import {
 
 const sessionId = crypto.randomUUID();
 
-export default function App() {
+function Workspace() {
   const [excalidrawAPI, setExcalidrawAPI] =
     useState<ExcalidrawImperativeAPI | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -42,7 +44,7 @@ export default function App() {
         }
         if (part.state !== "output-available") continue;
 
-        if (appliedToolCalls.current.has(part.id)) continue;
+        if (appliedToolCalls.current.has(part.toolCallId)) continue;
 
         if (part.type === "tool-generateDiagram") {
           appliedToolCalls.current.add(part.toolCallId);
@@ -65,11 +67,11 @@ export default function App() {
 
           if (output?.elementId && output.updates) {
             const current = excalidrawAPI.getSceneElements();
-            const next = current.map((el) => {
+            const next = current.map((el) =>
               el.id === output.elementId
                 ? newElementWith(el, output.updates as any)
-                : el;
-            }) as any;
+                : el,
+            ) as any;
 
             excalidrawAPI.updateScene({
               elements: next,
@@ -93,4 +95,22 @@ export default function App() {
       />
     </div>
   );
+}
+
+export default function App() {
+  const { session, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="auth-screen">
+        <div className="auth-loading">Loading session...</div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <AuthScreen />;
+  }
+
+  return <Workspace />;
 }
