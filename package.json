@@ -10,7 +10,7 @@
     "docs": "vitepress dev lessons --port=5170",
     "docs:build": "vitepress build lessons",
     "agent": "node scripts/test-agent.mjs",
-    "eval": "dotenv -e .dev.vars -- tsx evals/runs.ts"
+    "eval": "dotenv-cli -e .dev.vars -- braintrust eval evals/diagram.eval.ts"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "braintrust": "^3.42.0",
+    "dotenv": "^18.0.9",
     "dotenv-cli": "^11.1.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
