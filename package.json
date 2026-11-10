@@ -7,8 +7,6 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "docs": "vitepress dev lessons --port=5170",
-    "docs:build": "vitepress build lessons",
     "agent": "node scripts/test-agent.mjs",
     "eval": "dotenv-cli -e .dev.vars -- braintrust eval evals/diagram.eval.ts"
   },
@@ -23,6 +21,7 @@
     "@excalidraw/excalidraw": "^0.18.1",
     "@marsidev/react-turnstile": "^1.6.3",
     "@supabase/supabase-js": "^2.118.0",
+    "@toon-format/toon": "^4.4.0",
     "agents": "^0.30.1",
     "ai": "^7.0.152",
     "react": "^19.3.1",
@@ -41,7 +40,6 @@
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
-    "vitepress": "^1.6.4",
     "wrangler": "^4.152.0"
   }
 }
