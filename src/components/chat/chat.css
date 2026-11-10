@@ -22,6 +22,53 @@
   color: #333;
 }
 
+.chat-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.token-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid #c8e6c9;
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.token-badge .token-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2e7d32;
+}
+
+.token-badge.warning {
+  border-color: #ffe0b2;
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.token-badge.warning .token-dot {
+  background: #ef6c00;
+}
+
+.token-badge.exhausted {
+  border-color: #ffcdd2;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.token-badge.exhausted .token-dot {
+  background: #c62828;
+}
+
 .chat-signout-btn {
   padding: 4px 10px;
   background: transparent;
@@ -156,6 +203,36 @@
 
 .app.dark .chat-header h2 {
   color: #e0e0e0;
+}
+
+.app.dark .token-badge {
+  background: rgba(46, 125, 50, 0.18);
+  border-color: rgba(129, 199, 132, 0.35);
+  color: #81c784;
+}
+
+.app.dark .token-badge .token-dot {
+  background: #81c784;
+}
+
+.app.dark .token-badge.warning {
+  background: rgba(239, 108, 0, 0.18);
+  border-color: rgba(255, 183, 77, 0.35);
+  color: #ffb74d;
+}
+
+.app.dark .token-badge.warning .token-dot {
+  background: #ffb74d;
+}
+
+.app.dark .token-badge.exhausted {
+  background: rgba(198, 40, 40, 0.2);
+  border-color: rgba(229, 115, 115, 0.4);
+  color: #e57373;
+}
+
+.app.dark .token-badge.exhausted .token-dot {
+  background: #e57373;
 }
 
 .app.dark .chat-signout-btn {

@@ -6,6 +6,7 @@ import Canvas from "./components/Canvas";
 import ChatPanel from "./components/chat/ChatPanel";
 import AuthScreen from "./auth/AuthScreen";
 import { useAuth } from "./auth/useAuth";
+import type { RateLimitState } from "./rate-limit";
 import "./App.css";
 import {
   CaptureUpdateAction,
@@ -13,12 +14,19 @@ import {
   newElementWith,
 } from "@excalidraw/excalidraw";
 
-const sessionId = crypto.randomUUID();
-
-function Workspace() {
+function Workspace({
+  userId,
+  accessToken,
+}: {
+  userId: string;
+  accessToken: string;
+}) {
   const [excalidrawAPI, setExcalidrawAPI] =
     useState<ExcalidrawImperativeAPI | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [rateLimit, setRateLimit] = useState<RateLimitState | undefined>(
+    undefined,
+  );
 
   const appliedToolCalls = useRef(new Set());
 
@@ -26,16 +34,27 @@ function Workspace() {
     setExcalidrawAPI(api);
   }, []);
 
-  const agent = useAgent({ agent: "design-agent", name: sessionId });
-  const { messages, sendMessage, status } = useAgentChat({ agent });
+  // The worker verifies this Supabase JWT before routing to the agent.
+  // Keying the Durable Object instance by `userId` ensures the user's token
+  // budget and rate limit persist across page reloads.
+  const agent = useAgent<RateLimitState>({
+    agent: "design-agent",
+    name: userId,
+    query: { token: accessToken },
+    onStateUpdate: (nextState) => {
+      setRateLimit(nextState);
+    },
+  });
+  const { messages, sendMessage, status } = useAgentChat({
+    agent,
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 
   useEffect(() => {
     if (!excalidrawAPI) return;
-    console.log(messages);
     for (const message of messages) {
       if (message.role !== "assistant") continue;
       for (const part of message.parts ?? []) {
-        console.log("part", part);
         if (
           part.type !== "tool-generateDiagram" &&
           part.type !== "tool-modifyDiagram"
@@ -92,6 +111,7 @@ function Workspace() {
         messages={messages}
         sendMessage={sendMessage}
         status={status}
+        rateLimit={rateLimit ?? agent.state}
       />
     </div>
   );
@@ -112,5 +132,10 @@ export default function App() {
     return <AuthScreen />;
   }
 
-  return <Workspace />;
+  return (
+    <Workspace
+      userId={session.user.id}
+      accessToken={session.access_token}
+    />
+  );
 }

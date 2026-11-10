@@ -3,6 +3,7 @@ import {
   streamText,
   stepCountIs,
   type LanguageModel,
+  type LanguageModelUsage,
   type ModelMessage,
 } from "ai";
 import { tools } from "./tools";
@@ -14,6 +15,7 @@ interface AgentArgs {
   system?: string;
   canvasState?: any[];
   maxSteps?: number;
+  onFinish?: (event: { totalUsage: LanguageModelUsage }) => void | Promise<void>;
 }
 
 export function streamAgent({
@@ -21,6 +23,7 @@ export function streamAgent({
   messages,
   system = SYSTEM_PROMPT,
   maxSteps = 5,
+  onFinish,
 }: AgentArgs) {
   return streamText({
     model,
@@ -28,6 +31,7 @@ export function streamAgent({
     messages,
     tools,
     stopWhen: stepCountIs(maxSteps),
+    onFinish,
   });
 }
 

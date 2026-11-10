@@ -40,4 +40,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: >-
+            deploy
+            --var SUPABASE_URL:${{ vars.VITE_SUPABASE_URL }}
+            --var SUPABASE_PUBLISHABLE_KEY:${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
